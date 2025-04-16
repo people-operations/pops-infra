@@ -30,7 +30,7 @@ resource "aws_route_table" "rt-private-edu-invtt" {
 
 }
 
-resource "aws_route_table_association" "rt-private-association-edu-invtt" {
+resource "aws_route_table_association" "rt-private-association-pops" {
   subnet_id      = aws_subnet.private.id
   route_table_id = aws_route_table.rt-private-edu-invtt.id
 }
