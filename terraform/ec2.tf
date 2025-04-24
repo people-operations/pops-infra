@@ -4,6 +4,7 @@ resource "aws_instance" "ec2-public-pops" {
   subnet_id              = aws_subnet.public.id
   associate_public_ip_address = true
   security_groups        = [aws_security_group.sg-public-pops.id]
+  iam_instance_profile = "LabInstanceProfile"
   key_name = "key-ec2-public-pops"
 
   /* Arquivo para configurar a instância pública, por hora nosso projeto não vai utilizar
@@ -46,6 +47,7 @@ resource "aws_instance" "ec2-private-pops" {
   subnet_id              = aws_subnet.private.id
   associate_public_ip_address = false
   security_groups        = [aws_security_group.sg-private-pops.id]
+  iam_instance_profile = "LabInstanceProfile"
   key_name = "key-ec2-private-pops"
 
   depends_on = [aws_instance.ec2-public-pops, aws_route_table_association.rt-private-association-pops]
