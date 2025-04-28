@@ -87,6 +87,7 @@ resource "aws_ssm_parameter" "private_ip" {
 }
 
 # ======================== Executando o Script de Configuração ========================
+/*
 resource "null_resource" "configurar_bd" {
   depends_on = [aws_instance.ec2-public-pops, aws_instance.ec2-private-pops]
 
@@ -127,13 +128,13 @@ resource "null_resource" "configurar_frontend" {
     private_key = file("C:\\keys\\key-ec2-public-pops.pem")
   }
 }
-*/
 
 # ======================== Outputs (para visualizar os IPs) ========================
 output "nginx_public_ip" {
   description = "IP Público do Servidor Nginx"
   value       = aws_instance.ec2-public-pops.public_ip
 }
+*/
 
 output "backend_private_ip" {
   description = "IP Privado do Servidor MySQL"
