@@ -4,6 +4,7 @@ resource "aws_instance" "ec2-public-pops" {
   subnet_id              = aws_subnet.public.id
   associate_public_ip_address = true
   security_groups        = [aws_security_group.sg-public-pops.id]
+  iam_instance_profile = "LabInstanceProfile"
   key_name = "key-ec2-public-pops"
 
   /* Arquivo para configurar a instância pública, por hora nosso projeto não vai utilizar
@@ -46,6 +47,7 @@ resource "aws_instance" "ec2-private-pops" {
   subnet_id              = aws_subnet.private.id
   associate_public_ip_address = false
   security_groups        = [aws_security_group.sg-private-pops.id]
+  iam_instance_profile = "LabInstanceProfile"
   key_name = "key-ec2-private-pops"
 
   depends_on = [aws_instance.ec2-public-pops, aws_route_table_association.rt-private-association-pops]
@@ -85,6 +87,7 @@ resource "aws_ssm_parameter" "private_ip" {
 }
 
 # ======================== Executando o Script de Configuração ========================
+/*
 resource "null_resource" "configurar_bd" {
   depends_on = [aws_instance.ec2-public-pops, aws_instance.ec2-private-pops]
 
@@ -125,13 +128,13 @@ resource "null_resource" "configurar_frontend" {
     private_key = file("C:\\keys\\key-ec2-public-pops.pem")
   }
 }
-*/
 
 # ======================== Outputs (para visualizar os IPs) ========================
 output "nginx_public_ip" {
   description = "IP Público do Servidor Nginx"
   value       = aws_instance.ec2-public-pops.public_ip
 }
+*/
 
 output "backend_private_ip" {
   description = "IP Privado do Servidor MySQL"
