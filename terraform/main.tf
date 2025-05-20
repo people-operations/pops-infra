@@ -18,11 +18,11 @@ module "network" {
 
 module "storage" {
   source = "./modules/storage"
-  path_to_database_script = ""
-  path_to_private_script = ""
-  path_to_public_script = ""
+  emails_to_subscribe = [
+    "miguel.asilva@sptech.school"
+  ]
 }
-
+/*
 module "ec2" {
   depends_on = [module.network]
   source                  = "./modules/compute/ec2"
@@ -34,7 +34,17 @@ module "ec2" {
   path_to_public_script   = var.path_to_public_script
   path_to_database_script = var.path_to_database_script
 }
+*/
 
 module "lambda" {
+  depends_on = [module.storage]
   source = "./modules/compute/lambda"
+  s3_raw = module.storage.s3_raw
+  s3_trusted = module.storage.s3_trusted
+
+  s3_raw_arn = module.storage.s3_raw_arn
+  s3_trusted_arn = module.storage.s3_trusted_arn
+
+  sns_topic_certificados_arn = module.storage.sns_topic_certificados_arn
+  sns_topic_processamento_arn = module.storage.sns_topic_processamento_arn
 }
