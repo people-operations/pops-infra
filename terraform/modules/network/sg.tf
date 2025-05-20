@@ -58,13 +58,6 @@ resource "aws_security_group" "sg-private-pops" {
     security_groups = [aws_security_group.sg-public-pops.id]
   }
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["10.0.1.0/24"]
-  }
-
   egress {
     from_port   = 0
     to_port     = 0

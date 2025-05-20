@@ -7,4 +7,4 @@ terraform/terraform.tfstate.d/
 terraform/.terraform.tfstate.lock.info
 terraform.tfvars
 *.auto.tfvars
-keys/*
+terraform/keys/*
