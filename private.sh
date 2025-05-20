@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e  # Faz o script parar na primeira falha
+
 check_mysql() {
     if ! which mysql > /dev/null 2>&1; then
         echo "MySQL não está instalado. Instalando MySQL Server 8.0..."
@@ -22,15 +24,20 @@ install_mysql() {
 
 configure_mysql() {
     echo "Configurando MySQL para aceitar conexões externas..."
-    
-    MYSQL_CONFIG="/etc/mysql/mysql.conf.d/mysqld.cnf"
 
-    # Alterando o bind-address para 0.0.0.0
+    MYSQL_CONFIG="/etc/mysql/mysql.conf.d/mysqld.cnf"
+    if [ ! -f "$MYSQL_CONFIG" ]; then
+        MYSQL_CONFIG="/etc/mysql/my.cnf"
+    fi
+
     sudo sed -i "s/^bind-address\s*=.*/bind-address = 0.0.0.0/" "$MYSQL_CONFIG"
 
     echo "Reiniciando o MySQL para aplicar as mudanças..."
     sudo systemctl restart mysql
-    
+
+    echo "Aguardando MySQL iniciar..."
+    sleep 5
+
     create_db_user
 }
 
@@ -60,9 +67,6 @@ setup_database() {
   done
 
   echo "Banco de dados configurado com sucesso."
-
-  echo "Removendo repositório do diretório temporário..."
-  rm -rf "$DB_REPO_DIR"
 }
 
 # Executar verificações e configurações
