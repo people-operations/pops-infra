@@ -58,7 +58,7 @@ resource "aws_network_acl" "acl-private-pops" {
     protocol   = "tcp"
     rule_no    = 100
     action     = "allow"
-    cidr_block = "10.0.0.0/23"
+    cidr_block = "10.0.0.0/24"
     from_port  = 22
     to_port    = 22
   }
@@ -67,7 +67,7 @@ resource "aws_network_acl" "acl-private-pops" {
     protocol   = "tcp"
     rule_no    = 200
     action     = "allow"
-    cidr_block = "10.0.0.0/23"
+    cidr_block = "10.0.0.0/24"
     from_port  = 80
     to_port    = 80
   }
@@ -76,7 +76,7 @@ resource "aws_network_acl" "acl-private-pops" {
     protocol   = "tcp"
     rule_no    = 300
     action     = "allow"
-    cidr_block = "10.0.0.0/23"
+    cidr_block = "10.0.0.0/24"
     from_port  = 443
     to_port    = 443
   }
@@ -85,7 +85,7 @@ resource "aws_network_acl" "acl-private-pops" {
     protocol   = "tcp"
     rule_no    = 400
     action     = "allow"
-    cidr_block = "10.0.0.0/23"
+    cidr_block = "10.0.0.0/24"
     from_port  = 3306
     to_port    = 3306
   }
