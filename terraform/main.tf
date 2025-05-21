@@ -20,7 +20,12 @@ module "network" {
 module "storage" {
   source = "./modules/storage"
   emails_to_subscribe = [
-    "miguel.asilva@sptech.school"
+    "miguel.asilva@sptech.school",
+    "gyulia.piqueira@sptech.school",
+    "ruan.montanari@sptech.school",
+    "gabriel.nsilva@sptech.school",
+    "gabriel.soliveira@sptech.school",
+    "michelly.katayama@sptech.school"
   ]
 }
 /*
@@ -40,6 +45,7 @@ module "ec2" {
 module "lambda" {
   depends_on = [module.storage]
   source = "./modules/compute/lambda"
+
   s3_raw = module.storage.s3_raw
   s3_trusted = module.storage.s3_trusted
 
@@ -48,4 +54,9 @@ module "lambda" {
 
   sns_topic_certificados_arn = module.storage.sns_topic_certificados_arn
   sns_topic_processamento_arn = module.storage.sns_topic_processamento_arn
+
+  path_to_popsEtl_script = var.path_to_popsEtl_script
+  path_to_popsNotification_script = var.path_to_popsNotification_script
+  path_to_popsSegregation_script = var.path_to_popsSegregation_script
+  path_to_popsToRaw_script = var.path_to_popsToRaw_script
 }
