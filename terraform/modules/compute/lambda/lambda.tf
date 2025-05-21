@@ -2,7 +2,7 @@
 data "aws_caller_identity" "current" {}
 
 resource "aws_lambda_function" "upload-to-raw" {
-  function_name = "upload-to-raw"
+  function_name = "popsUploadToRaw"
   role          = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
   handler       = "Handler.LambdaHandler::handleRequest"
   runtime       = "java17"
@@ -80,8 +80,7 @@ resource "aws_lambda_function" "pops_segregation" {
   environment {
     variables = {
       BUCKET_ORIGEM = var.s3_trusted
-      TOPIC_ARN = var.sns_topic_certificados_arn
-      SNS_TOPIC_ARN = var.sns_topic_processamento_arn
+      BUCKET_DESTINO = var.s3_trusted
     }
   }
 }
@@ -94,7 +93,33 @@ resource "aws_lambda_permission" "allow_s3_invoke_segregation" {
   source_arn    = var.s3_trusted_arn
 }
 
-resource "aws_s3_bucket_notification" "s3_trigger_segregation" {
+resource "aws_lambda_function" "pops_notification" {
+  function_name = "popsNotification"
+  role          = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
+  handler       = "notification.lambda_handler"
+  runtime       = "python3.10"
+  filename      = "C:\\grupo_pops\\pops-api\\etl-python\\notification.zip"
+  timeout       = 60
+  memory_size   = 128
+
+  environment {
+    variables = {
+      BUCKET_ORIGEM = var.s3_trusted
+      TOPIC_ARN = var.sns_topic_certificados_arn
+      SNS_TOPIC_ARN = var.sns_topic_processamento_arn
+    }
+  }
+}
+
+resource "aws_lambda_permission" "allow_s3_invoke_notification" {
+  statement_id  = "AllowS3InvokeNotification"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.pops_notification.function_name
+  principal     = "s3.amazonaws.com"
+  source_arn    = var.s3_trusted_arn
+}
+
+resource "aws_s3_bucket_notification" "s3_trigger_trusted" {
   bucket = var.s3_trusted
 
   lambda_function {
@@ -104,5 +129,15 @@ resource "aws_s3_bucket_notification" "s3_trigger_segregation" {
     filter_suffix       = ".csv"
   }
 
-  depends_on = [aws_lambda_permission.allow_s3_invoke_segregation]
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.pops_notification.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = "2025/"
+  }
+
+  depends_on = [
+    aws_lambda_permission.allow_s3_invoke_segregation,
+    aws_lambda_permission.allow_s3_invoke_notification
+  ]
 }
+
