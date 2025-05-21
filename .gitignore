@@ -5,3 +5,6 @@ terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
 terraform/terraform.tfstate.d/
 terraform/.terraform.tfstate.lock.info
+terraform.tfvars
+*.auto.tfvars
+terraform/keys/*
