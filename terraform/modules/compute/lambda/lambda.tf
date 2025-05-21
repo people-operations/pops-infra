@@ -35,7 +35,7 @@ resource "aws_lambda_function" "pops_etl" {
   role          = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
   handler       = "rawToTrusted.lambda_handler"
   runtime       = "python3.10"
-  filename      = "C:\\grupo_pops\\pops-api\\etl-python\\rawToTrusted.zip"
+  filename      = var.path_to_popsEtl_script
   timeout       = 60
   memory_size   = 128
 
@@ -73,7 +73,7 @@ resource "aws_lambda_function" "pops_segregation" {
   role          = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
   handler       = "dateHandling.lambda_handler"
   runtime       = "python3.10"
-  filename      = "C:\\grupo_pops\\pops-api\\etl-python\\dateHandling.zip"
+  filename      = var.path_to_popsSegregation_script
   timeout       = 60
   memory_size   = 128
 
@@ -93,12 +93,13 @@ resource "aws_lambda_permission" "allow_s3_invoke_segregation" {
   source_arn    = var.s3_trusted_arn
 }
 
+# ========================= Função Lambda para notificação ========================
 resource "aws_lambda_function" "pops_notification" {
   function_name = "popsNotification"
   role          = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
   handler       = "notification.lambda_handler"
   runtime       = "python3.10"
-  filename      = "C:\\grupo_pops\\pops-api\\etl-python\\notification.zip"
+  filename      = var.path_to_popsNotification_script
   timeout       = 60
   memory_size   = 128
 
@@ -119,6 +120,7 @@ resource "aws_lambda_permission" "allow_s3_invoke_notification" {
   source_arn    = var.s3_trusted_arn
 }
 
+# ========================= Função Trigger para s3 trusted ========================
 resource "aws_s3_bucket_notification" "s3_trigger_trusted" {
   bucket = var.s3_trusted
 
@@ -132,7 +134,7 @@ resource "aws_s3_bucket_notification" "s3_trigger_trusted" {
   lambda_function {
     lambda_function_arn = aws_lambda_function.pops_notification.arn
     events              = ["s3:ObjectCreated:*"]
-    filter_prefix       = "2025/"
+    filter_prefix       = "${formatdate("YYYY", timestamp())}/"
   }
 
   depends_on = [
