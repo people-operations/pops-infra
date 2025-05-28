@@ -33,6 +33,11 @@ variable "path_to_popsToRaw_script" {
   type        = string
 }
 
+variable "path_to_popsToRawLote_script" {
+  description = "Caminho local para a função Lambda popsToRawLote"
+  type        = string
+}
+
 variable "path_to_popsEtl_script" {
   description = "Caminho local para a função Lambda popsEtl"
   type        = string
