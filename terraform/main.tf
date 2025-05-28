@@ -21,11 +21,11 @@ module "storage" {
   source = "./modules/storage"
   emails_to_subscribe = [
     "miguel.asilva@sptech.school",
-    "gyulia.piqueira@sptech.school",
-    "ruan.montanari@sptech.school",
-    "gabriel.nsilva@sptech.school",
-    "gabriel.soliveira@sptech.school",
-    "michelly.katayama@sptech.school"
+    //"gyulia.piqueira@sptech.school",
+    //"ruan.montanari@sptech.school",
+    //"gabriel.nsilva@sptech.school",
+    //"gabriel.soliveira@sptech.school",
+    //"michelly.katayama@sptech.school"
   ]
 }
 /*
@@ -59,4 +59,5 @@ module "lambda" {
   path_to_popsNotification_script = var.path_to_popsNotification_script
   path_to_popsSegregation_script = var.path_to_popsSegregation_script
   path_to_popsToRaw_script = var.path_to_popsToRaw_script
+  path_to_popsToRawLote_script = var.path_to_popsToRawLote_script
 }
