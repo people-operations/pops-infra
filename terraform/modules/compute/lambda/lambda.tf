@@ -34,6 +34,7 @@ resource "aws_lambda_function" "upload-to-raw-csv" {
   role          = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
   handler       = "uploadToRaw.lambda_handler"
   runtime       = "python3.10"
+  architectures = ["arm64"]
 
   filename      = var.path_to_popsToRawLote_script
   memory_size   = 512
@@ -68,6 +69,7 @@ resource "aws_lambda_function" "pops_etl" {
   filename      = var.path_to_popsEtl_script
   timeout       = 60
   memory_size   = 128
+  architectures = ["arm64"]
 
   environment {
     variables = {
@@ -106,6 +108,7 @@ resource "aws_lambda_function" "pops_dataHandling" {
   filename      = var.path_to_popsSegregation_script
   timeout       = 60
   memory_size   = 128
+  architectures = ["arm64"]
 
   environment {
     variables = {
@@ -132,6 +135,7 @@ resource "aws_lambda_function" "pops_notification" {
   filename      = var.path_to_popsNotification_script
   timeout       = 60
   memory_size   = 128
+  architectures = ["arm64"]
 
   environment {
     variables = {
