@@ -15,4 +15,3 @@ resource "aws_s3_bucket" "bucket-pops-trusted-certificacoes" {
     Name = "bucket-pops-trusted-certificacoes"
   }
 }
-

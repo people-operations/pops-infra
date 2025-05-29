@@ -11,11 +11,10 @@ terraform {
 provider "aws" {
   region = "us-east-1"
 }
-/*
+
 module "network" {
   source = "./modules/network"
 }
- */
 
 module "storage" {
   source = "./modules/storage"
@@ -28,7 +27,7 @@ module "storage" {
     "michelly.katayama@sptech.school"
   ]
 }
-/*
+
 module "ec2" {
   depends_on = [module.network]
   source                  = "./modules/compute/ec2"
@@ -40,7 +39,7 @@ module "ec2" {
   path_to_public_script   = var.path_to_public_script
   path_to_database_script = var.path_to_database_script
 }
-*/
+
 
 module "lambda" {
   depends_on = [module.storage]
@@ -59,4 +58,5 @@ module "lambda" {
   path_to_popsNotification_script = var.path_to_popsNotification_script
   path_to_popsSegregation_script = var.path_to_popsSegregation_script
   path_to_popsToRaw_script = var.path_to_popsToRaw_script
+  path_to_popsToRawLote_script = var.path_to_popsToRawLote_script
 }
