@@ -11,24 +11,23 @@ terraform {
 provider "aws" {
   region = "us-east-1"
 }
-/*
+
 module "network" {
   source = "./modules/network"
 }
- */
 
 module "storage" {
   source = "./modules/storage"
   emails_to_subscribe = [
     "miguel.asilva@sptech.school",
-    //"gyulia.piqueira@sptech.school",
-    //"ruan.montanari@sptech.school",
-    //"gabriel.nsilva@sptech.school",
-    //"gabriel.soliveira@sptech.school",
-    //"michelly.katayama@sptech.school"
+    "gyulia.piqueira@sptech.school",
+    "ruan.montanari@sptech.school",
+    "gabriel.nsilva@sptech.school",
+    "gabriel.soliveira@sptech.school",
+    "michelly.katayama@sptech.school"
   ]
 }
-/*
+
 module "ec2" {
   depends_on = [module.network]
   source                  = "./modules/compute/ec2"
@@ -40,7 +39,7 @@ module "ec2" {
   path_to_public_script   = var.path_to_public_script
   path_to_database_script = var.path_to_database_script
 }
-*/
+
 
 module "lambda" {
   depends_on = [module.storage]
