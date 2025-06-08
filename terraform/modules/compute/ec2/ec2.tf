@@ -12,15 +12,13 @@ resource "aws_instance" "ec2-public-pops" {
   iam_instance_profile        = "LabInstanceProfile"
   key_name                    = aws_key_pair.public_key.key_name
 
-  /* Arquivo para configurar a instância pública, por ora nosso projeto não vai utilizar
   provisioner "file" {
     source      = var.path_to_public_script
     destination = "/home/ubuntu/public.sh"
   }
-  */
 
   provisioner "file" {
-    source      = "../../../keys/key-ec2-private-pops.pem"
+    source      = "${path.root}/keys/key-ec2-private-pops.pem"
     destination = "/home/ubuntu/.ssh/key-ec2-private-pops.pem"
   }
 
@@ -33,12 +31,12 @@ resource "aws_instance" "ec2-public-pops" {
   connection {
     type        = "ssh"
     user        = "ubuntu"
-    private_key = file("../../../keys/key-ec2-public-pops.pem")
+    private_key = file("${path.root}/keys/key-ec2-public-pops.pem")
     host        = self.public_ip
 
     bastion_host        = aws_instance.ec2-public-pops.public_ip
     bastion_user        = "ubuntu"
-    bastion_private_key = file("../../../keys/key-ec2-public-pops.pem")
+    bastion_private_key = file("${path.root}/keys/key-ec2-public-pops.pem")
   }
 
   tags = {
@@ -114,16 +112,16 @@ resource "null_resource" "configurar_bd" {
     bastion_private_key = file("../../../keys/key-ec2-public-pops.pem")
   }
 }
-
+*/
 
 resource "null_resource" "configurar_frontend" {
-  depends_on = [aws_instance.ec2-public-pops, aws_instance.ec2-private-pops, null_resource.configurar_bd]
+  depends_on = [aws_instance.ec2-public-pops, aws_instance.ec2-private-pops]
 
   provisioner "remote-exec" {
     inline = [
       "sudo chmod 400 ~/.ssh/key-ec2-private-pops.pem",
       "sudo chmod +x /home/ubuntu/public.sh",
-      "sudo bash /home/ubuntu/public.sh ${aws_instance.ec2-private-edu-invtt.private_ip}"
+      "sudo bash /home/ubuntu/public.sh"
     ]
   }
 
@@ -131,7 +129,7 @@ resource "null_resource" "configurar_frontend" {
     type        = "ssh"
     host        = aws_instance.ec2-public-pops.public_ip
     user        = "ubuntu"
-    private_key = file("../../../keys/key-ec2-public-pops.pem")
+    private_key = file("${path.root}/keys/key-ec2-public-pops.pem")
   }
 }
 
@@ -140,10 +138,10 @@ output "nginx_public_ip" {
   description = "IP Público do Servidor Nginx"
   value       = aws_instance.ec2-public-pops.public_ip
 }
-*/
 
+/*
 output "backend_private_ip" {
   description = "IP Privado do Servidor MySQL"
   value       = aws_instance.ec2-private-pops.private_ip
 }
-
+*/
