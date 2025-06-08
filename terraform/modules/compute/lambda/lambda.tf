@@ -29,12 +29,12 @@ output "upload-to-raw-url" {
 }
 
 # ========================= Função Lambda para Upload em Lote ========================
-resource "aws_lambda_function" "upload-to-raw-csv" {
-  function_name = "popsUploadToRawCsv"
+resource "aws_lambda_function" "upload-to-raw-excel" {
+  function_name = "popsUploadToRawExcel"
   role          = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/LabRole"
   handler       = "uploadToRaw.lambda_handler"
   runtime       = "python3.10"
-  architectures = ["arm64"]
+  architectures = ["x86_64"]
 
   filename      = var.path_to_popsToRawLote_script
   memory_size   = 512
@@ -48,14 +48,14 @@ resource "aws_lambda_function" "upload-to-raw-csv" {
   }
 }
 
-resource "aws_lambda_function_url" "url-upload-to-raw-csv" {
-  function_name = aws_lambda_function.upload-to-raw-csv.function_name
+resource "aws_lambda_function_url" "url-upload-to-raw-excel" {
+  function_name = aws_lambda_function.upload-to-raw-excel.function_name
   authorization_type = "NONE"
 }
 
-output "upload-to-raw-url-csv" {
+output "upload-to-raw-url-excel" {
   description = "URL para acessar a função Lambda de upload em lote via csv"
-  value       = aws_lambda_function_url.url-upload-to-raw-csv.function_url
+  value       = aws_lambda_function_url.url-upload-to-raw-excel.function_url
 }
 
 

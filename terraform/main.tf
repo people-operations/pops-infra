@@ -20,11 +20,12 @@ module "storage" {
   source = "./modules/storage"
   emails_to_subscribe = [
     "miguel.asilva@sptech.school",
-    "gyulia.piqueira@sptech.school",
-    "ruan.montanari@sptech.school",
-    "gabriel.nsilva@sptech.school",
-    "gabriel.soliveira@sptech.school",
-    "michelly.katayama@sptech.school"
+    "7482fda1-df38-471a-8110-f093fb9c2f08@emailhook.site"
+    //"gyulia.piqueira@sptech.school",
+    //"ruan.montanari@sptech.school",
+    //"gabriel.nsilva@sptech.school",
+    //"gabriel.soliveira@sptech.school",
+    //"michelly.katayama@sptech.school"
   ]
 }
 
