@@ -1,0 +1,9 @@
+path_to_private_script   = "C:\\REPLACE_ME\\private.sh"
+path_to_public_script   = "C:\\REPLACE_ME\\public.sh"
+path_to_database_script   = "C:\\REPLACE_ME\\database"
+
+path_to_popsToRaw_script   = "C:\\REPLACE_ME\\pipe-bucket-1.0-SNAPSHOT.jar"
+path_to_popsToRawLote_script   = "C:\\REPLACE_ME\\uploadToRaw.zip"
+path_to_popsEtl_script   = "C:\\REPLACE_ME\\rawToTrusted.zip"
+path_to_popsSegregation_script   = "C:\\REPLACE_ME\\dateHandling.zip"
+path_to_popsNotification_script   = "C:\\REPLACE_ME\\notification.zip"
