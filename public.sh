@@ -14,7 +14,7 @@
 # echo "Usando o IP do backend: $BACKEND_IP"
 
 echo "Atualizando pacotes..."
-sudo apt update && sudo apt install -y nginx git openjdk-17-jdk
+sudo apt update && sudo apt install -y nginx git
 
 REPO_URL="https://github.com/people-operations/pops-web.git"
 BRANCH="feat/apresentacao-sprint"
