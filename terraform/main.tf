@@ -20,24 +20,26 @@ module "storage" {
   source = "./modules/storage"
   emails_to_subscribe = [
     "miguel.asilva@sptech.school",
-    "7482fda1-df38-471a-8110-f093fb9c2f08@emailhook.site"
-    //"gyulia.piqueira@sptech.school",
-    //"ruan.montanari@sptech.school",
-    //"gabriel.nsilva@sptech.school",
-    //"gabriel.soliveira@sptech.school",
-    //"michelly.katayama@sptech.school"
+    "gyulia.piqueira@sptech.school",
+    "ruan.montanari@sptech.school",
+    "gabriel.nsilva@sptech.school",
+    "gabriel.soliveira@sptech.school",
+    "michelly.katayama@sptech.school"
   ]
 }
+
 
 module "ec2" {
   depends_on = [module.network]
   source                  = "./modules/compute/ec2"
   subnet_public_id        = module.network.subnet_public_id
   subnet_private_id       = module.network.subnet_private_id
-  sg_public_pops_id       = module.network.sg_public_pops_id
+  sg_public_management_pops_id       = module.network.sg_public_management_pops
+  sg_public_analysis_pops_id        = module.network.sg_public_analysis_pops
   sg_private_pops_id      = module.network.sg_private_pops_id
   path_to_private_script  = var.path_to_private_script
   path_to_public_script   = var.path_to_public_script
+    path_to_public_data_analysis_script = var.path_to_public_data_analysis_script
   path_to_database_script = var.path_to_database_script
 }
 
@@ -61,3 +63,4 @@ module "lambda" {
   path_to_popsToRaw_script = var.path_to_popsToRaw_script
   path_to_popsToRawLote_script = var.path_to_popsToRawLote_script
 }
+

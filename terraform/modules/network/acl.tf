@@ -37,6 +37,15 @@ resource "aws_network_acl" "acl-public-pops" {
     to_port    = 65535
   }
 
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 500
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 8888
+    to_port    = 8888
+  }
+
   egress {
     protocol   = "-1"
     rule_no    = 100
@@ -114,11 +123,11 @@ resource "aws_network_acl" "acl-private-pops" {
 }
 
 resource "aws_network_acl_association" "acl-association-public-pops" {
-  subnet_id = aws_subnet.public.id
+  subnet_id      = aws_subnet.public.id
   network_acl_id = aws_network_acl.acl-public-pops.id
 }
 
 resource "aws_network_acl_association" "acl-association-private-pops" {
-  subnet_id = aws_subnet.private.id
+  subnet_id      = aws_subnet.private.id
   network_acl_id = aws_network_acl.acl-private-pops.id
 }
