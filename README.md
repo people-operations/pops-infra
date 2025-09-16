@@ -42,7 +42,7 @@ pops-infra/
 ### Itens que devem ser configurados para o funcionamento do projeto
 - No diretorio `terraform/keys/` do script `keys.ps1` deve ser executado para a criação de chaves pem para AWS.
 - Deve ser criado um arquivo chamado terraform.tfvars na raiz do projeto com as seguintes variáveis:
-```hcl
+```
 path_to_private_script
 path_to_public_script
 path_to_database_script
