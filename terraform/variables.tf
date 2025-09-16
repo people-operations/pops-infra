@@ -3,6 +3,11 @@ variable "path_to_public_script" {
   type        = string
 }
 
+variable "path_to_public_data_analysis_script" {
+  description = "Caminho local para o script de configração de EC2 para analise de dados"
+  type        = string
+}
+
 variable "path_to_private_script" {
   description = "Caminho local para o script privado"
   type        = string
