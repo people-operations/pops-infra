@@ -8,8 +8,13 @@ variable "subnet_private_id" {
   type        = string
 }
 
-variable "sg_public_pops_id" {
-  description = "ID do security group público"
+variable "sg_public_management_pops_id" {
+  description = "ID do security group da instancia de gerenciamento de squads"
+  type        = string
+}
+
+variable "sg_public_analysis_pops_id" {
+  description = "ID do security group da instancia de analise de dados"
   type        = string
 }
 
@@ -24,9 +29,14 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
-variable "key_pair_name_public" {
+variable "key_pair_name_management_public" {
   type    = string
-  default = "key-ec2-public-pops"
+  default = "key-ec2-public-management-pops"
+}
+
+variable "key_pair_name_analysis_public" {
+  type    = string
+  default = "key-ec2-data-analysis-pops"
 }
 
 variable "key_pair_name_private" {
@@ -41,7 +51,12 @@ variable "instance_type" {
 }
 
 variable "path_to_public_script" {
-  description = "Caminho local para o script privado"
+  description = "Caminho local para o script de configração de EC2 de gerenciamento de squads"
+  type        = string
+}
+
+variable "path_to_public_data_analysis_script" {
+  description = "Caminho local para o script de configração de EC2 para analise de dados"
   type        = string
 }
 
