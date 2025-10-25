@@ -15,7 +15,7 @@ provider "aws" {
 module "network" {
   source = "./modules/network"
 }
-
+/*
 module "storage" {
   source = "./modules/storage"
   emails_to_subscribe = [
@@ -27,23 +27,31 @@ module "storage" {
     "michelly.katayama@sptech.school"
   ]
 }
-
+*/
 
 module "ec2" {
-  depends_on = [module.network]
-  source                  = "./modules/compute/ec2"
-  subnet_public_id        = module.network.subnet_public_id
-  subnet_private_id       = module.network.subnet_private_id
-  sg_public_management_pops_id       = module.network.sg_public_management_pops
-  sg_public_analysis_pops_id        = module.network.sg_public_analysis_pops
-  sg_private_pops_id      = module.network.sg_private_pops_id
-  path_to_private_script  = var.path_to_private_script
-  path_to_public_script   = var.path_to_public_script
-    path_to_public_data_analysis_script = var.path_to_public_data_analysis_script
-  path_to_database_script = var.path_to_database_script
+  depends_on                          = [module.network]
+  source                              = "./modules/compute/ec2"
+  public_subnets                      = module.network.public_subnet_ids
+  private_subnet                      = module.network.private_subnet_id
+  sg_public_management_pops_id        = module.network.sg_public_management_pops_id
+  sg_public_analysis_pops_id          = module.network.sg_public_analysis_pops_id
+  sg_private_pops_id                  = module.network.sg_private_pops_id
+  path_to_private_script              = var.path_to_private_script
+  path_to_public_script               = var.path_to_public_script
+  path_to_public_data_analysis_script = var.path_to_public_data_analysis_script
+  path_to_database_script             = var.path_to_database_script
 }
 
-
+module "load_balancer" {
+  depends_on          = [module.ec2, module.network]
+  source              = "./modules/load_balancer"
+  vpc_id              = module.network.vpc_id
+  subnet_ids          = module.network.public_subnet_ids
+  security_groups_ids = module.network.security_groups_ids
+  ec2_ids             = module.ec2.ec2_ids
+}
+/*
 module "lambda" {
   depends_on = [module.storage]
   source = "./modules/compute/lambda"
@@ -63,4 +71,6 @@ module "lambda" {
   path_to_popsToRaw_script = var.path_to_popsToRaw_script
   path_to_popsToRawLote_script = var.path_to_popsToRawLote_script
 }
+
+ */
 

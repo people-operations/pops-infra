@@ -122,12 +122,13 @@ resource "aws_network_acl" "acl-private-pops" {
   }
 }
 
-resource "aws_network_acl_association" "acl-association-public-pops" {
-  subnet_id      = aws_subnet.public.id
+resource "aws_network_acl_association" "acl_association_public" {
+  for_each       = { for idx, subnet_id in local.public_subnets : idx => subnet_id }
+  subnet_id      = each.value
   network_acl_id = aws_network_acl.acl-public-pops.id
 }
 
-resource "aws_network_acl_association" "acl-association-private-pops" {
-  subnet_id      = aws_subnet.private.id
+resource "aws_network_acl_association" "acl_association_private" {
+  subnet_id      = aws_subnet.private_c.id
   network_acl_id = aws_network_acl.acl-private-pops.id
 }

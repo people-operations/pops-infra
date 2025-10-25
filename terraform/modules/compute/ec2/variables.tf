@@ -1,10 +1,14 @@
-variable "subnet_public_id" {
-  description = "ID da subnet pública"
-  type        = string
+variable "azs" {
+  default = ["us-east-1a", "us-east-1b"]
 }
 
-variable "subnet_private_id" {
-  description = "ID da subnet privada"
+variable "public_subnets" {
+  description = "Subnets públicas para cada AZ"
+  type        = list(string)
+}
+
+variable "private_subnet" {
+  description = "Id subnet privada"
   type        = string
 }
 
