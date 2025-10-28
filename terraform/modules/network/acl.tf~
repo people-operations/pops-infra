@@ -46,15 +46,6 @@ resource "aws_network_acl" "acl-public-pops" {
     to_port    = 8888
   }
 
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 600
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 3000
-    to_port    = 3000
-  }
-
   egress {
     protocol   = "-1"
     rule_no    = 100

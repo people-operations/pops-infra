@@ -152,26 +152,33 @@ resource "null_resource" "configurar_data_analysis" {
     private_key = file("${path.root}/keys/key-ec2-data-analysis-pops.pem")
   }
 }
+*/
 
 resource "null_resource" "configurar_frontend" {
-  depends_on = [null_resource.configurar_bd]
+  depends_on = [
+    aws_instance.ec2_public_management,
+    aws_instance.ec2_private
+  ]
+  count = length(aws_instance.ec2_public_management)
 
   provisioner "remote-exec" {
     inline = [
       "sudo chmod 400 ~/.ssh/key-ec2-private-pops.pem",
       "sudo chmod +x /home/ubuntu/public.sh",
-      "sudo bash /home/ubuntu/public.sh ${aws_instance.ec2-private-pops.private_ip}"
+      "sudo bash /home/ubuntu/public.sh ${aws_instance.ec2_private.private_ip}"
     ]
   }
 
   connection {
     type        = "ssh"
-    host        = aws_instance.ec2-public-management-pops.public_ip
+    host        = aws_instance.ec2_public_management[count.index].public_ip
     user        = "ubuntu"
     private_key = file("${path.root}/keys/key-ec2-public-management-pops.pem")
   }
 }
 
+
+/*
 # ======================== Outputs (para visualizar os IPs) ========================
 output "nginx_public_ip" {
   description = "IP Público do Servidor Nginx"

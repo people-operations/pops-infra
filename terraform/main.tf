@@ -48,8 +48,9 @@ module "load_balancer" {
   source              = "./modules/load_balancer"
   vpc_id              = module.network.vpc_id
   subnet_ids          = module.network.public_subnet_ids
-  security_groups_ids = module.network.security_groups_ids
-  ec2_ids             = module.ec2.ec2_ids
+  security_groups_id_alb = module.network.security_groups_id_alb
+  ec2_ids_analysis    = module.ec2.ec2_ids_analysis
+  ec2_ids_management  = module.ec2.ec2_ids_management
 }
 /*
 module "lambda" {

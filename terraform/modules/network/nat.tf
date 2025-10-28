@@ -10,16 +10,3 @@ resource "aws_nat_gateway" "nat_pops_a" {
     Name = "nat-pops-a"
   }
 }
-
-resource "aws_eip" "nat_eip_b" {
-  vpc = true
-}
-
-resource "aws_nat_gateway" "nat_pops_b" {
-  allocation_id = aws_eip.nat_eip_b.id
-  subnet_id     = aws_subnet.public_b.id
-
-  tags = {
-    Name = "nat-pops-b"
-  }
-}

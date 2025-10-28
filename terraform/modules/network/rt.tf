@@ -51,19 +51,3 @@ resource "aws_route_table_association" "rt_private_c_association" {
   subnet_id      = aws_subnet.private_c.id
   route_table_id = aws_route_table.rt_private_c_primary.id
 }
-
-/*
-# Route table secundária com NAT da AZ B (failover)
-resource "aws_route_table" "rt_private_c_failover" {
-  vpc_id = aws_vpc.vpc-pops.id
-
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_pops_b.id
-  }
-
-  tags = {
-    Name = "rt-private-c-failover"
-  }
-}
- */

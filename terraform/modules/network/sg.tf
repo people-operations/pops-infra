@@ -72,6 +72,14 @@ resource "aws_security_group" "sg-public-analysis-pops" {
     cidr_blocks = ["${chomp(data.http.my_ip.response_body)}/32"]
   }
 
+  ingress {
+    description = "Custom TCP 3000 (Grafana)"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -110,5 +118,54 @@ resource "aws_security_group" "sg-private-pops" {
 
   tags = {
     Name = "sg-private-pops"
+  }
+}
+
+resource "aws_security_group" "sg_alb" {
+  name        = "sg_alb_pops"
+  description = "SG do Load Balancer para redirecionar trafego para EC2s"
+  vpc_id      = aws_vpc.vpc-pops.id
+
+  ingress {
+    description = "HTTP padrao"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Management app porta 8080"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Grafana app porta 3000"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Jupyter app porta 8888"
+    from_port   = 8888
+    to_port     = 8888
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "sg-alb-pops"
   }
 }

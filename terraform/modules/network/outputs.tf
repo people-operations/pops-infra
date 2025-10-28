@@ -30,10 +30,7 @@ output "vpc_id" {
   value       = aws_vpc.vpc-pops.id
 }
 
-output "security_groups_ids" {
-  description = "IDs dos security groups"
-  value = [
-    aws_security_group.sg-private-pops.id,
-    aws_security_group.sg-public-analysis-pops.id
-  ]
+output "security_groups_id_alb" {
+  description = "IDs dos security groups do ALB"
+  value       = [aws_security_group.sg_alb.id]
 }
