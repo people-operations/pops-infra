@@ -16,5 +16,5 @@
 - name: Executar script de instalação de dependências da análise
   shell: bash /home/ubuntu/public_data_analysis.sh
 
-- name: Executar script de configuração do Grafana
-  shell: bash /home/ubuntu/grafana.sh
+# - name: Executar script de configuração do Grafana
+#  shell: bash /home/ubuntu/grafana.sh
