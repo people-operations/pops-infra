@@ -19,4 +19,4 @@ apt-get install -y grafana
 systemctl start grafana-server
 systemctl enable grafana-server
 
-systemctl status grafana-server
+# systemctl status grafana-server

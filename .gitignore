@@ -1,11 +1,60 @@
-.idea/*
-terraform/.terraform/
-terraform/.terraform.lock.hcl
-terraform/terraform.tfstate
-terraform/terraform.tfstate.backup
-terraform/terraform.tfstate.d/
-terraform/.terraform.tfstate.lock.info
+# ======================================
+# Terraform
+# ======================================
+*.tfstate
+*.tfstate.*
+.crash
+.terraform/
+.terraform.lock.hcl
+*.backup
+*.log
+
+# Sensível: variáveis ou arquivos locais
 terraform.tfvars
 *.auto.tfvars
-terraform/keys/*.pem
-terraform/keys/*.pub
+*.pem
+*.key
+*.pub
+
+# Evita salvar os outputs se forem criados como arquivos
+outputs*.json
+
+# ======================================
+# Ansible
+# ======================================
+
+# Arquivos sensíveis ou gerados por script
+ansible/files/*.pem
+ansible/files/*.json
+ansible/files/*.key
+ansible/files/script.sql
+
+# Cache do Ansible
+*.retry
+*.log
+__pycache__/
+*.pyc
+
+# Inventários dinâmicos gerados
+inventory_dynamic.json
+
+# ======================================
+# Sistema / IDEs / SO
+# ======================================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# VSCode / IntelliJ / Eclipse / etc.
+.vscode/
+.idea/
+*.iml
+
+# Keys
+*.ppk
+*.pem.pub
+key-*.pem
+key-*.ppk
+key-*.pem.pub
+*.json

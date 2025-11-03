@@ -3,6 +3,11 @@ variable "s3_raw" {
   type        = string
 }
 
+variable "gemini_token" {
+    description = "Token de acesso à API Gemini"
+    type        = string
+}
+
 variable "s3_raw_arn" {
   description = "ARN do bucket S3 para os dados brutos"
   type        = string

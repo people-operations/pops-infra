@@ -55,18 +55,17 @@ create_db_user() {
 }
 
 setup_database() {
-  DB_DIR="/tmp/database"
-  echo "Executando scripts SQL para configurar o banco de dados..."
-  for script in script.sql inserts.sql; do
-    if [ -f "$DB_DIR/$script" ]; then
-      echo "Executando $script..."
-      sudo mysql < "$DB_DIR/$script"
-    else
-      echo "Arquivo $script não encontrado. Pulando..."
-    fi
-  done
+  DB_SCRIPT="/tmp/script.sql"
 
-  echo "Banco de dados configurado com sucesso."
+  echo "Executando script SQL de configuração do banco de dados..."
+
+  if [ -f "$DB_SCRIPT" ]; then
+    echo "Executando $DB_SCRIPT..."
+    sudo mysql < "$DB_SCRIPT"
+    echo "Banco de dados configurado com sucesso."
+  else
+    echo "Arquivo $DB_SCRIPT não encontrado. Pulando configuração."
+  fi
 }
 
 # Executar verificações e configurações

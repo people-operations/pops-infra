@@ -14,6 +14,7 @@ resource "aws_lambda_function" "upload-to-raw" {
   environment {
     variables = {
       BUCKET_NAME = var.s3_raw
+      GEMINI_API_KEY = var.gemini_token
     }
   }
 }

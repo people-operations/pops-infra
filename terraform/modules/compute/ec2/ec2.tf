@@ -23,13 +23,65 @@ resource "aws_instance" "ec2_public_management" {
   iam_instance_profile        = "LabInstanceProfile"
   key_name                    = aws_key_pair.public_key_management.key_name
 
+  user_data = <<-EOF
+              #!/bin/bash
+              mkdir -p /opt/pops/keys
+              chown ubuntu:ubuntu /opt/pops/keys
+              EOF
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo mkdir -p /opt/pops/keys",
+      "sudo chown ubuntu:ubuntu /opt/pops/keys"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${path.root}/keys/key-ec2-public-management-pops.pem")
+      host        = self.public_ip
+    }
+  }
+
   provisioner "file" {
     source      = var.path_to_public_script
     destination = "/home/ubuntu/public.sh"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${path.root}/keys/key-ec2-public-management-pops.pem")
+      host        = self.public_ip
+    }
   }
 
-  provisioner "remote-exec" {
-    inline = ["chmod +x /home/ubuntu/public.sh"]
+  provisioner "file" {
+    source      = "${path.root}/keys/pops-srv-employee-firebase-adminsdk-fbsvc-e86c8fbf1b.json"
+    destination = "/opt/pops/keys/pops-srv-employee-firebase-adminsdk-fbsvc-e86c8fbf1b.json"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${path.root}/keys/key-ec2-public-management-pops.pem")
+      host        = self.public_ip
+    }
+  }
+
+  provisioner "file" {
+    source      = var.path_to_backend_script
+    destination = "/home/ubuntu/backend.sh"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${path.root}/keys/key-ec2-public-management-pops.pem")
+      host        = self.public_ip
+    }
+  }
+
+  provisioner "file" {
+    source      = "${path.root}/keys/key-ec2-private-pops.pem"
+    destination = "/home/ubuntu/.ssh/key-ec2-private-pops.pem"
   }
 
   connection {
@@ -37,6 +89,21 @@ resource "aws_instance" "ec2_public_management" {
     user        = "ubuntu"
     private_key = file("${path.root}/keys/key-ec2-public-management-pops.pem")
     host        = self.public_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /home/ubuntu/public.sh",
+      "chmod +x /home/ubuntu/backend.sh",
+      "chmod 400 /home/ubuntu/.ssh/key-ec2-private-pops.pem"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${path.root}/keys/key-ec2-public-management-pops.pem")
+      host        = self.public_ip
+    }
   }
 
   tags = {
@@ -59,8 +126,14 @@ resource "aws_instance" "ec2_public_analysis" {
     destination = "/home/ubuntu/public_data_analysis.sh"
   }
 
+  provisioner "file" {
+    source      = var.path_to_grafana_script
+    destination = "/home/ubuntu/grafana.sh"
+  }
+
   provisioner "remote-exec" {
-    inline = ["chmod +x /home/ubuntu/public_data_analysis.sh"]
+    inline = ["chmod +x /home/ubuntu/public_data_analysis.sh",
+      "chmod +x /home/ubuntu/grafana.sh"]
   }
 
   connection {
@@ -93,7 +166,7 @@ resource "aws_instance" "ec2_private" {
 
   provisioner "file" {
     source      = var.path_to_database_script
-    destination = "/tmp/database"
+    destination = "/tmp/script.sql"
   }
 
   connection {
@@ -113,46 +186,26 @@ resource "aws_instance" "ec2_private" {
 }
 
 # ======================== Executando o Script de Configuração ========================
-/*
-resource "null_resource" "configurar_bd" {
-  depends_on = [aws_instance.ec2-private-pops]
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo chmod +x /home/ubuntu/private.sh",
-      "sudo bash /home/ubuntu/private.sh"
-    ]
-  }
-
-  connection {
-    type        = "ssh"
-    user        = "ubuntu"
-    private_key = file("${path.root}/keys/key-ec2-private-pops.pem")
-    host        = aws_instance.ec2-private-pops.private_ip
-
-    bastion_host        = aws_instance.ec2-public-management-pops.public_ip
-    bastion_user        = "ubuntu"
-    bastion_private_key = file("${path.root}/keys/key-ec2-public-management-pops.pem")
-  }
-}
 
 resource "null_resource" "configurar_data_analysis" {
-  depends_on = [aws_instance.ec2-public-data-analysis-pops]
+  depends_on = [aws_instance.ec2_public_analysis]
+
+  count = length(aws_instance.ec2_public_analysis)
 
   provisioner "remote-exec" {
     inline = [
-      "sudo bash /home/ubuntu/public_data_analysis.sh"
+      "sudo bash /home/ubuntu/public_data_analysis.sh",
+      "sudo bash /home/ubuntu/grafana.sh"
     ]
   }
 
   connection {
     type        = "ssh"
-    host        = aws_instance.ec2-public-data-analysis-pops.public_ip
+    host        = aws_instance.ec2_public_analysis[count.index].public_ip
     user        = "ubuntu"
     private_key = file("${path.root}/keys/key-ec2-data-analysis-pops.pem")
   }
 }
-*/
 
 resource "null_resource" "configurar_frontend" {
   depends_on = [
@@ -165,7 +218,7 @@ resource "null_resource" "configurar_frontend" {
     inline = [
       "sudo chmod 400 ~/.ssh/key-ec2-private-pops.pem",
       "sudo chmod +x /home/ubuntu/public.sh",
-      "sudo bash /home/ubuntu/public.sh ${aws_instance.ec2_private.private_ip}"
+      "sudo chmod +x /home/ubuntu/backend.sh"
     ]
   }
 
@@ -176,22 +229,3 @@ resource "null_resource" "configurar_frontend" {
     private_key = file("${path.root}/keys/key-ec2-public-management-pops.pem")
   }
 }
-
-
-/*
-# ======================== Outputs (para visualizar os IPs) ========================
-output "nginx_public_ip" {
-  description = "IP Público do Servidor Nginx"
-  value       = aws_instance.ec2-public-management-pops.public_ip
-}
-
-output "backend_private_ip" {
-  description = "IP Privado do Servidor MySQL"
-  value       = aws_instance.ec2-private-pops.private_ip
-}
-
-output "data_analysis_public_ip" {
-  description = "IP Público do Servidor de Análise de Dados"
-  value       = aws_instance.ec2-public-data-analysis-pops.public_ip
-}
-*/

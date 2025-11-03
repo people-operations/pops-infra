@@ -9,3 +9,5 @@ path_to_popsSegregation_script   = "C:\\REPLACE_ME\\dateHandling.zip"
 path_to_popsNotification_script   = "C:\\REPLACE_ME\\notification.zip"
 
 path_to_database_script   = "C:\\REPLACE_ME\\script.sql"
+
+gemini_token = "REPLACE_ME"

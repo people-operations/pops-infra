@@ -27,12 +27,6 @@ variable "sg_private_pops_id" {
   type        = string
 }
 
-variable "aws_region" {
-  description = "AWS region"
-  type        = string
-  default = "us-east-1"
-}
-
 variable "key_pair_name_management_public" {
   type    = string
   default = "key-ec2-public-management-pops"
@@ -71,5 +65,15 @@ variable "path_to_private_script" {
 
 variable "path_to_database_script" {
   description = "Caminho local para o script do banco de dados"
+  type        = string
+}
+
+variable "path_to_grafana_script" {
+    description = "Caminho local para o script de configuração do Grafana"
+    type        = string
+}
+
+variable "path_to_backend_script" {
+  description = "Caminho local para o script de configuração do Grafana"
   type        = string
 }

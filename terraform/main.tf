@@ -15,7 +15,7 @@ provider "aws" {
 module "network" {
   source = "./modules/network"
 }
-/*
+
 module "storage" {
   source = "./modules/storage"
   emails_to_subscribe = [
@@ -27,7 +27,7 @@ module "storage" {
     "michelly.katayama@sptech.school"
   ]
 }
-*/
+
 
 module "ec2" {
   depends_on                          = [module.network]
@@ -41,7 +41,10 @@ module "ec2" {
   path_to_public_script               = var.path_to_public_script
   path_to_public_data_analysis_script = var.path_to_public_data_analysis_script
   path_to_database_script             = var.path_to_database_script
+  path_to_backend_script = var.path_to_backend_script
+  path_to_grafana_script = var.path_to_grafana_script
 }
+
 
 module "load_balancer" {
   depends_on          = [module.ec2, module.network]
@@ -52,12 +55,13 @@ module "load_balancer" {
   ec2_ids_analysis    = module.ec2.ec2_ids_analysis
   ec2_ids_management  = module.ec2.ec2_ids_management
 }
-/*
+
 module "lambda" {
   depends_on = [module.storage]
   source = "./modules/compute/lambda"
 
   s3_raw = module.storage.s3_raw
+  gemini_token = var.gemini_token
   s3_trusted = module.storage.s3_trusted
 
   s3_raw_arn = module.storage.s3_raw_arn
@@ -72,6 +76,3 @@ module "lambda" {
   path_to_popsToRaw_script = var.path_to_popsToRaw_script
   path_to_popsToRawLote_script = var.path_to_popsToRawLote_script
 }
-
- */
-
