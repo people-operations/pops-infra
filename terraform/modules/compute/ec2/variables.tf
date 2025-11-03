@@ -45,35 +45,5 @@ variable "key_pair_name_private" {
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
-  default = "t2.micro"
-}
-
-variable "path_to_public_script" {
-  description = "Caminho local para o script de configração de EC2 de gerenciamento de squads"
-  type        = string
-}
-
-variable "path_to_public_data_analysis_script" {
-  description = "Caminho local para o script de configração de EC2 para analise de dados"
-  type        = string
-}
-
-variable "path_to_private_script" {
-  description = "Caminho local para o script privado"
-  type        = string
-}
-
-variable "path_to_database_script" {
-  description = "Caminho local para o script do banco de dados"
-  type        = string
-}
-
-variable "path_to_grafana_script" {
-    description = "Caminho local para o script de configuração do Grafana"
-    type        = string
-}
-
-variable "path_to_backend_script" {
-  description = "Caminho local para o script de configuração do Grafana"
-  type        = string
+  default = "t3.small"
 }

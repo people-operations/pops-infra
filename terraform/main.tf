@@ -20,11 +20,11 @@ module "storage" {
   source = "./modules/storage"
   emails_to_subscribe = [
     "miguel.asilva@sptech.school",
-    "gyulia.piqueira@sptech.school",
-    "ruan.montanari@sptech.school",
-    "gabriel.nsilva@sptech.school",
-    "gabriel.soliveira@sptech.school",
-    "michelly.katayama@sptech.school"
+    //"gyulia.piqueira@sptech.school",
+    //"ruan.montanari@sptech.school",
+    //"gabriel.nsilva@sptech.school",
+   // "gabriel.soliveira@sptech.school",
+  //  "michelly.katayama@sptech.school"
   ]
 }
 
@@ -37,12 +37,6 @@ module "ec2" {
   sg_public_management_pops_id        = module.network.sg_public_management_pops_id
   sg_public_analysis_pops_id          = module.network.sg_public_analysis_pops_id
   sg_private_pops_id                  = module.network.sg_private_pops_id
-  path_to_private_script              = var.path_to_private_script
-  path_to_public_script               = var.path_to_public_script
-  path_to_public_data_analysis_script = var.path_to_public_data_analysis_script
-  path_to_database_script             = var.path_to_database_script
-  path_to_backend_script = var.path_to_backend_script
-  path_to_grafana_script = var.path_to_grafana_script
 }
 
 

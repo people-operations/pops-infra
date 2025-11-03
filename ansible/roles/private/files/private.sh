@@ -46,7 +46,7 @@ create_db_user() {
     DB_PASS="p0ps#?025!"
 
     echo "Criando o usuário '$DB_USER' no MySQL..."
-    sudo mysql -e "CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';"
+    sudo mysql -e "CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED WITH mysql_native_password BY '$DB_PASS';"
     sudo mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'%' WITH GRANT OPTION;"
     sudo mysql -e "FLUSH PRIVILEGES;"
 
