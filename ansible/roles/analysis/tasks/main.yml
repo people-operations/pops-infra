@@ -1,0 +1,20 @@
+---
+- name: Copiar scripts de data analysis
+  copy:
+    src: "{{ item }}"
+    dest: "/home/ubuntu/{{ item }}"
+    mode: '0755'
+  loop:
+    - public_data_analysis.sh
+    - grafana.sh
+
+- name: Garantir permissão de execução nos scripts
+  shell: |
+    chmod +x /home/ubuntu/public_data_analysis.sh
+    chmod +x /home/ubuntu/grafana.sh
+
+- name: Executar script de instalação de dependências da análise
+  shell: bash /home/ubuntu/public_data_analysis.sh
+
+- name: Executar script de configuração do Grafana
+  shell: bash /home/ubuntu/grafana.sh

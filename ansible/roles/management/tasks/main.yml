@@ -1,0 +1,43 @@
+---
+- name: Criar diretório para chaves
+  file:
+    path: /opt/pops/keys
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0755'
+
+- name: Copiar scripts para /home/ubuntu/
+  copy:
+    src: "{{ item }}"
+    dest: "/home/ubuntu/{{ item }}"
+    mode: '0755'
+  loop:
+    - public.sh
+    - backend.sh
+
+- name: Copiar chave do Firebase
+  copy:
+    src: pops-srv-employee-firebase-adminsdk-fbsvc-e86c8fbf1b.json
+    dest: /opt/pops/keys/pops-srv-employee-firebase-adminsdk-fbsvc-e86c8fbf1b.json
+    mode: '0644'
+    owner: ubuntu
+    group: ubuntu
+
+- name: Copiar chave da EC2 privada
+  copy:
+    src: key-ec2-private-pops.pem
+    dest: /home/ubuntu/.ssh/key-ec2-private-pops.pem
+    mode: '0400'
+
+- name: Garantir permissões corretas nos scripts
+  shell: |
+    chmod +x /home/ubuntu/public.sh
+    chmod +x /home/ubuntu/backend.sh
+    chmod 400 /home/ubuntu/.ssh/key-ec2-private-pops.pem
+
+- name: Executar public.sh
+  shell: bash /home/ubuntu/public.sh
+
+- name: Executar backend.sh
+  shell: bash /home/ubuntu/backend.sh

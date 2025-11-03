@@ -1,0 +1,15 @@
+---
+- name: Copiar script de configuração privada
+  copy:
+    src: private.sh
+    dest: /home/ubuntu/private.sh
+    mode: '0755'
+
+- name: Copiar script SQL de banco de dados
+  copy:
+    src: script.sql
+    dest: /tmp/script.sql
+    mode: '0644'
+
+- name: Executar o script de configuração privada
+  shell: bash /home/ubuntu/private.sh

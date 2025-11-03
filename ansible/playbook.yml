@@ -1,0 +1,18 @@
+---
+- name: Configuração da instância EC2 Public Management
+  hosts: public_management
+  become: true
+  roles:
+    - management
+
+- name: Configuração da instância EC2 Public Analysis
+  hosts: public_analysis
+  become: true
+  roles:
+    - analysis
+
+- name: Configuração da instância EC2 Private (via Bastion)
+  hosts: private
+  become: true
+  roles:
+    - private
