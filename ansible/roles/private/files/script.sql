@@ -2,7 +2,7 @@
 -- Script completo para criação do banco e autenticação MySQL
 -- Projeto: PeopleOps Project Manager API
 -- =========================================================
-
+DROP DATABASE popsdb;
 -- Criar banco de dados
 CREATE DATABASE IF NOT EXISTS popsdb
     CHARACTER SET utf8mb4
@@ -168,56 +168,6 @@ INSERT INTO skill (name, description, skill_type_id) VALUES
                                                          ('Power BI', 'Ferramenta de Business Intelligence', 4),
                                                          ('Python', 'Linguagem de programação para análise de dados', 4),
                                                          ('SQL Avançado', 'Consultas SQL complexas e otimização', 4);
-
-INSERT INTO skill_type (name, description) VALUES
-                                               ('HARD', 'Habilidades técnicas e conhecimentos específicos'),
-                                               ('SOFT', 'Habilidades comportamentais e interpessoais'),
-                                               ('MANAGEMENT', 'Habilidades de gestão e liderança'),
-                                               ('ANALYTICS', 'Habilidades de análise de dados e métricas');
-
-INSERT INTO project_type (name, description) VALUES
-                                                 ('DESENVOLVIMENTO', 'Projetos de desenvolvimento de software'),
-                                                 ('WEB', 'Projetos de desenvolvimento web'),
-                                                 ('MOBILE', 'Projetos de desenvolvimento mobile'),
-                                                 ('INFRAESTRUTURA', 'Projetos de infraestrutura e DevOps'),
-                                                 ('BI', 'Projetos de Business Intelligence e Analytics'),
-                                                 ('CONSULTORIA', 'Projetos de consultoria e análise');
-
-INSERT INTO project_status (name, description) VALUES
-                                                   ('PLANNING', 'Projeto em fase de planejamento'),
-                                                   ('IN_PROGRESS', 'Projeto em andamento'),
-                                                   ('ON_HOLD', 'Projeto pausado temporariamente'),
-                                                   ('COMPLETED', 'Projeto concluído com sucesso'),
-                                                   ('CANCELLED', 'Projeto cancelado');
-
-INSERT INTO skill (name, description, skill_type_id) VALUES
-                                                         ('Java', 'Linguagem de programação Java', 1),
-                                                         ('Kotlin', 'Linguagem de programação Kotlin', 1),
-                                                         ('Spring Boot', 'Framework Spring Boot para desenvolvimento de APIs', 1),
-                                                         ('MySQL', 'Sistema de gerenciamento de banco de dados MySQL', 1),
-                                                         ('Docker', 'Plataforma de containerização', 1),
-                                                         ('Git', 'Sistema de controle de versão', 1),
-                                                         ('React', 'Biblioteca JavaScript para interfaces de usuário', 1),
-                                                         ('Node.js', 'Runtime JavaScript para desenvolvimento backend', 1),
-                                                         ('Comunicação', 'Habilidade de comunicação interpessoal', 2),
-                                                         ('Liderança', 'Capacidade de liderar equipes', 2),
-                                                         ('Trabalho em Equipe', 'Habilidade de trabalhar colaborativamente', 2),
-                                                         ('Resolução de Problemas', 'Capacidade de analisar e resolver problemas', 2),
-                                                         ('Gestão de Tempo', 'Habilidade de gerenciar tempo e prioridades', 2),
-                                                         ('Adaptabilidade', 'Capacidade de se adaptar a mudanças', 2),
-                                                         ('Gestão de Projetos', 'Habilidade em gerenciar projetos', 3),
-                                                         ('Gestão de Equipes', 'Habilidade em gerenciar equipes', 3),
-                                                         ('Scrum', 'Metodologia ágil Scrum', 3),
-                                                         ('Power BI', 'Ferramenta de Business Intelligence', 4),
-                                                         ('Python', 'Linguagem de programação para análise de dados', 4),
-                                                         ('SQL Avançado', 'Consultas SQL complexas e otimização', 4);
-
--- INSERT INTO project_skills (project_id, skill_id) VALUES
---                                                      (1, 1),(1, 2),(1, 3),(1, 4),(1, 9),(1, 10),(1, 11),(1, 15),
---                                                      (2, 1),(2, 2),(2, 3),(2, 4),(2, 7),(2, 9),(2, 11),(2, 12),
---                                                      (3, 1),(3, 2),(3, 5),(3, 6),(3, 9),(3, 10),(3, 13),
---                                                      (4, 4),(4, 5),(4, 6),(4, 12),(4, 14),
---                                                      (5, 1),(5, 3),(5, 4),(5, 19),(5, 20),(5, 9),(5, 12);
 
 INSERT INTO project (name, project_type_id, description, project_status_id, budget, start_date, end_date, area) VALUES
 	('Sistema de Gestão de Projetos', 1, 'Sistema completo para gerenciar projetos, equipes e recursos', 2, 50000.00, '2024-09-01', '2024-12-31', 'Tecnologia'),
