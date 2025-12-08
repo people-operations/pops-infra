@@ -11,12 +11,21 @@ REPOS=(
   "https://github.com/people-operations/pops-srv-funcionarios.git"
   "https://github.com/people-operations/pops-srv-projetos.git"
   "https://github.com/people-operations/pops-squad-api.git"
+  "https://github.com/people-operations/pop-srv-dashboard.git"
 )
-NAMES=("pops-srv-employee" "pops-srv-projetos" "pops-squad-api")
-PORTS=(8081 8082 8083)
+NAMES=("pops-srv-employee" "pops-srv-projetos" "pops-squad-api" "pop-srv-dashboard")
+PORTS=(8081 8082 8083 8080)
 
 # Caminho padrão da chave Firebase
 FIREBASE_KEY_PATH="/opt/pops/keys/pops-srv-employee-firebase-adminsdk-fbsvc-e86c8fbf1b.json"
+
+# Variáveis de ambiente do Banco
+export DB_URL="jdbc:mysql://10.0.1.118:3306/popsdb?useSSL=false&serverTimezone=UTC"
+export DB_USERNAME="pops"
+export DB_PASSWORD="p0ps#?025!"
+
+echo "Usando DB_URL: $DB_URL"
+
 
 # ========================
 # Instalar dependências (somente se necessário)
@@ -100,12 +109,11 @@ if [ -f "$FIREBASE_KEY_PATH" ]; then
   export FIREBASE_KEY_PATH="$FIREBASE_KEY_PATH"
 else
   echo "ERRO: Chave Firebase não encontrada em $FIREBASE_KEY_PATH"
-  echo "Verifique o caminho antes de continuar."
   exit 1
 fi
 
 # ========================
-# Rodar serviços em background (com config global)
+# Rodar serviços em background (com config global + variáveis de BD)
 # ========================
 echo ""
 echo "🚀 Iniciando serviços em background..."
@@ -135,6 +143,10 @@ for i in "${!NAMES[@]}"; do
 
   echo "→ Executando $name na porta $port..."
   nohup bash -lc "cd '$SERVICE_DIR' && \
+    DB_URL='$DB_URL' \
+    DB_USERNAME='$DB_USERNAME' \
+    DB_PASSWORD='$DB_PASSWORD' \
+    FIREBASE_KEY_PATH='$FIREBASE_KEY_PATH' \
     java -jar '$JAR_FILE' \
       --server.port=$port \
       --spring.config.import=optional:file:$GLOBAL_CONFIG_PATH" \
@@ -155,8 +167,10 @@ echo "Backend PeopleOps implantado com sucesso!"
 echo " - Employee API: http://localhost:8081/api-employee"
 echo " - Project API:  http://localhost:8082/api-project"
 echo " - Squad API:    http://localhost:8083/api-squad"
+echo " - Dashboard API: http://localhost:8080/api"
 echo ""
 echo "Logs disponíveis em:"
 echo " - $DEPLOY_DIR/pops-srv-employee.log"
 echo " - $DEPLOY_DIR/pops-srv-projetos.log"
 echo " - $DEPLOY_DIR/pops-squad-api.log"
+echo " - $DEPLOY_DIR/pop-srv-dashboard.log"
